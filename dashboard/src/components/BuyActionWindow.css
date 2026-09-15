@@ -3,12 +3,15 @@
 ========================================= */
 
 .buy-container {
-  width: 420px;
-  height: auto;
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 420px !important;
+  height: 270px !important;
+  min-height: 270px !important;
+  max-height: 270px !important;
+
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
 
   background: #ffffff;
   border: 1px solid #e3e7ed;
@@ -16,16 +19,22 @@
 
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
 
-  overflow: hidden;
+  overflow: hidden !important;
   z-index: 1000;
 
   box-sizing: border-box;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* BUY HEADER */
+
+/* =========================================
+   BUY HEADER
+========================================= */
 
 .buy-header {
   width: 100%;
+  height: 68px;
   min-height: 68px;
 
   padding: 14px 18px;
@@ -54,7 +63,10 @@
   font-size: 11px;
 }
 
-/* BUY BADGE */
+
+/* =========================================
+   BUY BADGE
+========================================= */
 
 .buy-badge {
   display: inline-flex;
@@ -72,10 +84,15 @@
   font-weight: 700;
 }
 
-/* BUY ORDER */
+
+/* =========================================
+   BUY ORDER
+========================================= */
 
 .buy-order {
   width: 100%;
+  height: 151px;
+  min-height: 151px;
 
   padding: 16px;
 
@@ -84,7 +101,10 @@
   background: #ffffff;
 }
 
-/* BUY INPUTS */
+
+/* =========================================
+   BUY INPUTS
+========================================= */
 
 .buy-inputs {
   width: 100%;
@@ -139,16 +159,19 @@
   box-sizing: border-box;
 }
 
-/* BUY SUMMARY */
+
+/* =========================================
+   BUY SUMMARY
+========================================= */
 
 .buy-summary {
-  margin-top: 14px;
+  margin-top: 12px;
 
-  padding: 10px 11px;
+  padding: 9px 11px;
 
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
 
   background: #fafbfc;
 
@@ -175,10 +198,15 @@
   font-weight: 600;
 }
 
-/* BUY BUTTONS */
+
+/* =========================================
+   BUY BUTTONS
+========================================= */
 
 .buy-buttons {
   width: 100%;
+  height: 51px;
+  min-height: 51px;
 
   display: flex;
   align-items: center;
@@ -194,6 +222,7 @@
 
   border-top: 1px solid #edf0f4;
 }
+
 
 /* BUY CANCEL */
 
@@ -217,6 +246,7 @@
 .buy-cancel:hover {
   background: #f5f6f7;
 }
+
 
 /* BUY SUBMIT */
 
@@ -247,14 +277,16 @@
 ========================================= */
 
 .sell-container {
-  width: 360px;
-  height: auto;
+  width: 360px !important;
+  height: 250px !important;
+  min-height: 250px !important;
+  max-height: 250px !important;
 
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 50% !important;
 
-  transform: translateX(-50%);
+  transform: translateX(-50%) !important;
 
   background: #ffffff;
 
@@ -263,17 +295,24 @@
 
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.16);
 
-  overflow: hidden;
+  overflow: hidden !important;
 
   z-index: 1001;
 
   box-sizing: border-box;
+
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* SELL HEADER */
+
+/* =========================================
+   SELL HEADER
+========================================= */
 
 .sell-header {
   width: 100%;
+  height: 68px;
   min-height: 68px;
 
   padding: 14px 16px;
@@ -303,7 +342,10 @@
   font-size: 11px;
 }
 
-/* SELL BADGE */
+
+/* =========================================
+   SELL BADGE
+========================================= */
 
 .sell-badge {
   display: inline-flex;
@@ -324,10 +366,15 @@
   font-weight: 700;
 }
 
-/* SELL ORDER */
+
+/* =========================================
+   SELL ORDER
+========================================= */
 
 .sell-order {
   width: 100%;
+  height: 131px;
+  min-height: 131px;
 
   padding: 16px;
 
@@ -336,7 +383,10 @@
   background: #ffffff;
 }
 
-/* SELL INPUTS */
+
+/* =========================================
+   SELL INPUTS
+========================================= */
 
 .sell-inputs {
   width: 100%;
@@ -391,12 +441,15 @@
   box-sizing: border-box;
 }
 
-/* SELL SUMMARY */
+
+/* =========================================
+   SELL SUMMARY
+========================================= */
 
 .sell-summary {
-  margin-top: 14px;
+  margin-top: 12px;
 
-  padding: 10px 11px;
+  padding: 9px 11px;
 
   display: flex;
   align-items: center;
@@ -423,10 +476,15 @@
   font-weight: 600;
 }
 
-/* SELL BUTTONS */
+
+/* =========================================
+   SELL BUTTONS
+========================================= */
 
 .sell-buttons {
   width: 100%;
+  height: 51px;
+  min-height: 51px;
 
   display: flex;
   align-items: center;
@@ -442,6 +500,7 @@
 
   border-top: 1px solid #edf0f4;
 }
+
 
 /* SELL CANCEL */
 
@@ -465,6 +524,7 @@
 .sell-cancel:hover {
   background: #e5e7e9;
 }
+
 
 /* SELL SUBMIT */
 
@@ -496,12 +556,20 @@
 
 @media (max-width: 600px) {
   .buy-container {
-    width: calc(100% - 30px);
+    width: calc(100% - 30px) !important;
     max-width: 420px;
+
+    height: 270px !important;
+    min-height: 270px !important;
+    max-height: 270px !important;
   }
 
   .sell-container {
-    width: calc(100% - 30px);
+    width: calc(100% - 30px) !important;
     max-width: 360px;
+
+    height: 250px !important;
+    min-height: 250px !important;
+    max-height: 250px !important;
   }
 }

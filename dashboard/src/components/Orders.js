@@ -6,7 +6,7 @@ const Orders = () => {
 
   useEffect(() => {
     axios
-      .get("https://zerodha-clone-backend-pkvo.onrender.com/allOrders")
+      .get("https://zerodha-clone-b18n.onrender.com/allOrders")
       .then((res) => {
         console.log("Orders:", res.data);
         setOrders(res.data);

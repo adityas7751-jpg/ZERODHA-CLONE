@@ -1,0 +1,262 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.nav-link{
+  margin-left: 40px;
+}
+
+
+
+/* #supportHero {
+  background-color: rgb(56, 126, 209);
+  color: white;
+  height: 300px;
+}
+
+/* Top section *
+#supportWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 25px 0 !important;
+}
+
+#supportWrapper h4 {
+  margin: 0;
+}
+
+#supportWrapper a {
+  color: white;
+}
+
+/* Main content *
+#supportHero .row {
+  max-width: 1200px;
+  margin: 35px auto 0 !important;
+  padding: 0 !important;
+}
+
+#supportHero .col-6 {
+  padding: 0 10px !important;
+}
+
+/* Heading 
+#supportHero h1 {
+  font-size: 22px !important;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+/* Search box 
+#supportHero input {
+  width: 100%;
+  height: 55px;
+
+  padding: 15px 20px;
+  box-sizing: border-box;
+
+  border: none;
+  border-radius: 5px;
+  outline: none;
+
+  font-size: 14px;
+}
+
+/* Links below search 
+#supportHero .col-6 > a {
+  color: white;
+  margin-right: 8px;
+}
+
+/* Featured list 
+#supportHero ol {
+  margin-top: 5px;
+}
+
+#supportHero ol a {
+  color: white;
+} */
+
+#supportHero {
+  background-color: rgb(56, 126, 209);
+  color: white;
+  height: 360px;   /* 300 se 360 */
+}
+
+/* Top section */
+#supportWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 25px 0 !important;
+}
+
+/* Main content */
+#supportHero .row {
+  max-width: 1200px;
+  margin: 55px auto 0 !important;   /* 35px se 55px */
+  padding: 0 !important;
+}
+
+#supportHero .col-6 {
+  padding: 0 10px !important;
+}
+
+#supportHero h1 {
+  font-size: 22px !important;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+#supportHero input {
+  width: 100%;
+  height: 55px;
+  padding: 15px 20px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 14px;
+}
+
+#supportHero .col-6 > a {
+  color: white;
+  margin-right: 8px;
+}
+
+#supportHero ol {
+  margin-top: 5px;
+}
+
+#supportHero ol a {
+  color: white;
+}
+#supportWrapper a {
+  color: white !important;
+}
+#supportHero .col-6 > a {
+  color: white;
+  margin-right: 12px;
+}
+#supportHero .row {
+  max-width: 1200px;
+  margin: 25px auto 0 !important;
+  padding: 0 !important;
+  display: flex;
+  justify-content: space-between;
+}
+
+#supportHero .col-6:first-child {
+  width: 52%;
+}
+
+#supportHero .col-6:last-child {
+  width: 38%;
+}
+#supportWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 25px 0 !important;
+}
+#supportHero {
+  background-color: rgb(56, 126, 209);
+  color: white;
+  height: 360px;
+}
+
+/* Top */
+#supportWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 0 !important;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#supportWrapper h4 {
+  margin: 0;
+}
+
+#supportWrapper a {
+  color: white !important;
+}
+
+/* Main content */
+#supportHero .row {
+  max-width: 1200px;
+  margin: 25px auto 0 !important;
+  padding: 0 !important;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+/* IMPORTANT */
+#supportHero .col-6 {
+  padding: 0 !important;
+}
+
+#supportHero .col-6:first-child {
+  width: 52%;
+}
+
+#supportHero .col-6:last-child {
+  width: 38%;
+}
+
+/* Heading */
+#supportHero h1 {
+  font-size: 22px !important;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+/* Input */
+#supportHero input {
+  width: 100%;
+  height: 55px;
+  padding: 15px 20px;
+  box-sizing: border-box;
+
+  border: none;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* Links */
+#supportHero .col-6 > a {
+  color: white;
+  margin-right: 12px;
+}
+
+/* Featured */
+#supportHero ol {
+  margin-top: 5px;
+}
+
+#supportHero ol a {
+  color: white;
+}

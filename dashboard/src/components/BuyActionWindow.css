@@ -307,3 +307,42 @@
     gap: 10px;
   }
 }
+.sell-window {
+  width: 360px !important;
+  max-width: 360px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: 320px !important;
+  bottom: 20px !important;
+}
+
+.sell-window .header {
+  padding: 16px 18px;
+}
+
+.sell-window .regular-order {
+  padding: 16px !important;
+}
+
+.sell-window .buttons {
+  padding: 12px 16px !important;
+}
+
+.sell-badge {
+  background: #fff0f0;
+  color: #e53935;
+  border: 1px solid #ffd2d2;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.btn-sell {
+  background: #e53935;
+  color: white;
+}
+
+.btn-sell:hover {
+  background: #c62828;
+}

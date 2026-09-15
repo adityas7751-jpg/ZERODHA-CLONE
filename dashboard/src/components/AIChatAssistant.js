@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { holdings } from "../data/data";
 import "./AIChatAssistant.css";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3002";
+const API_URL = process.env.REACT_APP_API_URL || "https://zerodha-clone-b18n.onrender.com";;
 
 const getPortfolio = () => {
   const totalInvestment = holdings.reduce((sum, stock) => sum + Number(stock.avg) * Number(stock.qty), 0);

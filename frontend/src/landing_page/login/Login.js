@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 
-const API_URL = "http://localhost:3002";
+const API_URL =  "https://zerodha-clone-b18n.onrender.com";
 
 const inputStyle = {
   width: "100%",

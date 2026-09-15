@@ -39,8 +39,8 @@ const SellActionWindow = ({ uid, closeSellWindow }) => {
   };
 
   return (
-    <div className="container sell-window">
-      <div className="header">
+    <div className="sell-container">
+      <div className="sell-header">
         <div>
           <h3>Place Sell Order</h3>
           <span>{uid}</span>
@@ -49,10 +49,11 @@ const SellActionWindow = ({ uid, closeSellWindow }) => {
         <span className="sell-badge">SELL</span>
       </div>
 
-      <div className="regular-order">
-        <div className="inputs">
+      <div className="sell-order">
+        <div className="sell-inputs">
           <fieldset>
             <legend>Quantity</legend>
+
             <input
               type="number"
               min="1"
@@ -63,6 +64,7 @@ const SellActionWindow = ({ uid, closeSellWindow }) => {
 
           <fieldset>
             <legend>Price</legend>
+
             <input
               type="number"
               min="0"
@@ -72,26 +74,29 @@ const SellActionWindow = ({ uid, closeSellWindow }) => {
           </fieldset>
         </div>
 
-        <div className="order-summary">
+        <div className="sell-summary">
           <span>Order Value</span>
+
           <strong>
             ₹{(Number(stockQuantity) * Number(stockPrice)).toFixed(2)}
           </strong>
         </div>
       </div>
 
-      <div className="buttons">
-        <div>
-          <button className="btn btn-grey" onClick={closeSellWindow}>
-            Cancel
-          </button>
-        </div>
+      <div className="sell-buttons">
+        <button
+          className="sell-cancel"
+          onClick={closeSellWindow}
+        >
+          Cancel
+        </button>
 
-        <div>
-          <button className="btn btn-sell" onClick={handleSellClick}>
-            Sell
-          </button>
-        </div>
+        <button
+          className="sell-submit"
+          onClick={handleSellClick}
+        >
+          Sell
+        </button>
       </div>
     </div>
   );

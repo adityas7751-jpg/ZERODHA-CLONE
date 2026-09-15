@@ -979,7 +979,7 @@ mongoose
   .then(() => {
     console.log("DB started!");
 
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0",() => {
       console.log(
         `App started on port ${PORT}`
       );

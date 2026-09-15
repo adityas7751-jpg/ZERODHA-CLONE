@@ -22,30 +22,33 @@ const BuyActionWindow = ({ uid, mode }) => {
 
       if (response.data) {
         generalContext.closeBuyWindow();
+        window.location.reload();
       }
     } catch (error) {
       alert("BUY order failed: Backend server not connected");
     }
   };
 
-  const marginRequired = (Number(stockQuantity) * Number(stockPrice)).toFixed(2);
+  const orderValue = (
+    Number(stockQuantity) * Number(stockPrice)
+  ).toFixed(2);
 
   return (
     <div
       style={{
-        width: "100%",
-        maxWidth: "520px",
-        background: "#ffffff",
-        borderRadius: "18px",
+        width: "420px",
+        maxWidth: "calc(100vw - 40px)",
+        background: "#fff",
+        borderRadius: "16px",
         overflow: "hidden",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.18)",
-        border: "1px solid #e6eaf0",
+        border: "1px solid #e5e9ef",
+        boxShadow: "0 18px 45px rgba(0, 0, 0, 0.16)",
       }}
     >
       {/* Header */}
       <div
         style={{
-          padding: "18px 22px",
+          padding: "15px 18px",
           borderBottom: "1px solid #edf0f4",
           display: "flex",
           justifyContent: "space-between",
@@ -55,10 +58,9 @@ const BuyActionWindow = ({ uid, mode }) => {
         <div>
           <div
             style={{
-              fontSize: "16px",
+              fontSize: "15px",
               fontWeight: "600",
               color: "#222",
-              marginBottom: "4px",
             }}
           >
             Place Order
@@ -66,7 +68,8 @@ const BuyActionWindow = ({ uid, mode }) => {
 
           <div
             style={{
-              fontSize: "13px",
+              marginTop: "3px",
+              fontSize: "11px",
               color: "#8a8f98",
             }}
           >
@@ -76,11 +79,11 @@ const BuyActionWindow = ({ uid, mode }) => {
 
         <span
           style={{
-            padding: "6px 12px",
+            padding: "5px 11px",
             borderRadius: "20px",
             background: "#e8f7ef",
             color: "#159447",
-            fontSize: "12px",
+            fontSize: "11px",
             fontWeight: "600",
           }}
         >
@@ -89,22 +92,21 @@ const BuyActionWindow = ({ uid, mode }) => {
       </div>
 
       {/* Body */}
-      <div style={{ padding: "24px 22px" }}>
+      <div style={{ padding: "18px" }}>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "16px",
+            gap: "12px",
           }}
         >
-          {/* Quantity */}
           <div>
             <label
               style={{
                 display: "block",
-                fontSize: "12px",
-                color: "#7b8190",
-                marginBottom: "7px",
+                marginBottom: "6px",
+                fontSize: "11px",
+                color: "#777",
                 fontWeight: "500",
               }}
             >
@@ -118,27 +120,25 @@ const BuyActionWindow = ({ uid, mode }) => {
               onChange={(e) => setStockQuantity(e.target.value)}
               style={{
                 width: "100%",
-                height: "48px",
-                padding: "0 14px",
+                height: "42px",
+                padding: "0 12px",
                 border: "1px solid #dfe3e8",
-                borderRadius: "10px",
-                outline: "none",
-                fontSize: "15px",
-                color: "#222",
-                boxSizing: "border-box",
+                borderRadius: "9px",
                 background: "#fafbfc",
+                fontSize: "14px",
+                boxSizing: "border-box",
+                outline: "none",
               }}
             />
           </div>
 
-          {/* Price */}
           <div>
             <label
               style={{
                 display: "block",
-                fontSize: "12px",
-                color: "#7b8190",
-                marginBottom: "7px",
+                marginBottom: "6px",
+                fontSize: "11px",
+                color: "#777",
                 fontWeight: "500",
               }}
             >
@@ -148,19 +148,19 @@ const BuyActionWindow = ({ uid, mode }) => {
             <input
               type="number"
               min="0"
+              step="0.05"
               value={stockPrice}
               onChange={(e) => setStockPrice(e.target.value)}
               style={{
                 width: "100%",
-                height: "48px",
-                padding: "0 14px",
+                height: "42px",
+                padding: "0 12px",
                 border: "1px solid #dfe3e8",
-                borderRadius: "10px",
-                outline: "none",
-                fontSize: "15px",
-                color: "#222",
-                boxSizing: "border-box",
+                borderRadius: "9px",
                 background: "#fafbfc",
+                fontSize: "14px",
+                boxSizing: "border-box",
+                outline: "none",
               }}
             />
           </div>
@@ -169,9 +169,9 @@ const BuyActionWindow = ({ uid, mode }) => {
         {/* Order Summary */}
         <div
           style={{
-            marginTop: "22px",
-            padding: "16px",
-            borderRadius: "12px",
+            marginTop: "15px",
+            padding: "12px 14px",
+            borderRadius: "10px",
             background: "#f7f9fc",
             border: "1px solid #edf0f4",
           }}
@@ -180,22 +180,26 @@ const BuyActionWindow = ({ uid, mode }) => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: "10px",
+              marginBottom: "6px",
             }}
           >
-            <span style={{ fontSize: "13px", color: "#777" }}>
+            <span
+              style={{
+                fontSize: "11px",
+                color: "#777",
+              }}
+            >
               Order Value
             </span>
 
-            <span
+            <strong
               style={{
-                fontSize: "14px",
-                fontWeight: "600",
+                fontSize: "12px",
                 color: "#222",
               }}
             >
-              ₹{marginRequired}
-            </span>
+              ₹{orderValue}
+            </strong>
           </div>
 
           <div
@@ -204,18 +208,23 @@ const BuyActionWindow = ({ uid, mode }) => {
               justifyContent: "space-between",
             }}
           >
-            <span style={{ fontSize: "13px", color: "#777" }}>
+            <span
+              style={{
+                fontSize: "11px",
+                color: "#777",
+              }}
+            >
               Margin required
             </span>
 
             <span
               style={{
-                fontSize: "13px",
+                fontSize: "11px",
                 color: "#387ed1",
                 fontWeight: "500",
               }}
             >
-              ₹{marginRequired}
+              ₹{orderValue}
             </span>
           </div>
         </div>
@@ -224,24 +233,22 @@ const BuyActionWindow = ({ uid, mode }) => {
       {/* Footer */}
       <div
         style={{
-          padding: "16px 22px",
+          padding: "12px 18px",
           borderTop: "1px solid #edf0f4",
           display: "flex",
           justifyContent: "flex-end",
-          gap: "10px",
-          background: "#fff",
+          gap: "8px",
         }}
       >
         <button
           onClick={() => generalContext.closeBuyWindow()}
           style={{
-            padding: "10px 20px",
-            borderRadius: "9px",
+            padding: "8px 17px",
+            borderRadius: "8px",
             border: "1px solid #d9dde3",
             background: "#fff",
             color: "#555",
-            fontSize: "13px",
-            fontWeight: "500",
+            fontSize: "12px",
             cursor: "pointer",
           }}
         >
@@ -251,15 +258,15 @@ const BuyActionWindow = ({ uid, mode }) => {
         <button
           onClick={handleOrderClick}
           style={{
-            padding: "10px 24px",
-            borderRadius: "9px",
+            padding: "8px 20px",
+            borderRadius: "8px",
             border: "none",
             background: "#387ed1",
             color: "#fff",
-            fontSize: "13px",
+            fontSize: "12px",
             fontWeight: "600",
             cursor: "pointer",
-            boxShadow: "0 5px 14px rgba(56,126,209,0.25)",
+            boxShadow: "0 4px 12px rgba(56, 126, 209, 0.22)",
           }}
         >
           Buy

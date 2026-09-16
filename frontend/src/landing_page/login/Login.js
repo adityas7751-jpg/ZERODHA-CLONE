@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 
-const API_URL =  "https://zerodha-clone-b18n.onrender.com";
+const API_URL = "https://zerodha-clone-b18n.onrender.com";
 
 const inputStyle = {
   width: "100%",
@@ -58,15 +58,14 @@ const Login = () => {
 
       alert("Login successful");
 
-      window.location.href =
-        "https://zerodha-clone-dashboard-aditya.netlify.app";
+      window.location.href = "https://zerodha-clone-blush.vercel.app";
     } catch (error) {
       console.log("Login Error:", error);
 
       alert(
         error.response?.data?.error ||
           error.response?.data?.message ||
-          "Login failed"
+          "Login failed",
       );
     } finally {
       setLoading(false);
@@ -93,8 +92,7 @@ const Login = () => {
       console.log("Google Login Error:", error);
 
       alert(
-        error.response?.data?.error ||
-          "Google login failed. Please try again."
+        error.response?.data?.error || "Google login failed. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -125,7 +123,7 @@ const Login = () => {
       alert(
         error.response?.data?.error ||
           error.response?.data?.message ||
-          "Failed to send OTP"
+          "Failed to send OTP",
       );
     } finally {
       setLoading(false);
@@ -157,7 +155,7 @@ const Login = () => {
       alert(
         error.response?.data?.error ||
           error.response?.data?.message ||
-          "Invalid OTP"
+          "Invalid OTP",
       );
     } finally {
       setLoading(false);
@@ -205,7 +203,7 @@ const Login = () => {
       alert(
         error.response?.data?.error ||
           error.response?.data?.message ||
-          "Password reset failed"
+          "Password reset failed",
       );
     } finally {
       setLoading(false);
@@ -397,8 +395,8 @@ const Login = () => {
             lineHeight: "1.7",
           }}
         >
-          Enter your registered email address and we'll send you a
-          verification code.
+          Enter your registered email address and we'll send you a verification
+          code.
         </p>
       </div>
 
@@ -696,9 +694,7 @@ const Login = () => {
             >
               Your money.
               <br />
-              <span style={{ color: "#387ed1" }}>
-                Your decisions.
-              </span>
+              <span style={{ color: "#387ed1" }}>Your decisions.</span>
             </h1>
 
             <p
@@ -710,8 +706,8 @@ const Login = () => {
                 marginBottom: "30px",
               }}
             >
-              Access your portfolio, track your investments and make
-              informed decisions with a simple and powerful platform.
+              Access your portfolio, track your investments and make informed
+              decisions with a simple and powerful platform.
             </p>
 
             <div

@@ -32,14 +32,12 @@ const emailTransporter = nodemailer.createTransport({
 
 const app = express();
 
-
 // =====================================
 // MIDDLEWARE
 // =====================================
 
 app.use(cors());
 app.use(bodyParser.json());
-
 
 // =====================================
 // HOME / TEST
@@ -50,7 +48,6 @@ app.get("/", (req, res) => {
     message: "Zerodha Clone Backend is running",
   });
 });
-
 
 // =====================================
 // SIGNUP
@@ -116,7 +113,6 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-
 // =====================================
 // LOGIN
 // =====================================
@@ -181,7 +177,6 @@ app.post("/login", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // GOOGLE LOGIN
@@ -278,7 +273,6 @@ app.post("/auth/google", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // FORGOT PASSWORD - SEND OTP
@@ -388,7 +382,6 @@ app.post("/forgot-password", async (req, res) => {
   }
 });
 
-
 // =====================================
 // VERIFY OTP
 // =====================================
@@ -447,7 +440,6 @@ app.post("/verify-otp", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // RESET PASSWORD
@@ -524,7 +516,6 @@ app.post("/reset-password", async (req, res) => {
   }
 });
 
-
 // =====================================
 // GET ALL HOLDINGS
 // =====================================
@@ -543,7 +534,6 @@ app.get("/allHoldings", async (req, res) => {
   }
 });
 
-
 // =====================================
 // GET ALL POSITIONS
 // =====================================
@@ -561,7 +551,6 @@ app.get("/allPositions", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // GET ALL ORDERS
@@ -582,7 +571,6 @@ app.get("/allOrders", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // NEW ORDER
@@ -617,7 +605,6 @@ app.post("/newOrder", async (req, res) => {
         error: "Mode must be BUY or SELL",
       });
     }
-
 
     // =================================
     // BUY
@@ -661,7 +648,6 @@ app.post("/newOrder", async (req, res) => {
       }
     }
 
-
     // =================================
     // SELL
     // =================================
@@ -703,7 +689,6 @@ app.post("/newOrder", async (req, res) => {
       }
     }
 
-
     // =================================
     // SAVE ORDER
     // =================================
@@ -720,7 +705,6 @@ app.post("/newOrder", async (req, res) => {
     console.log(
       `Order saved: ${mode} ${name} ${quantity}`
     );
-
 
     // =================================
     // RESPONSE
@@ -739,7 +723,6 @@ app.post("/newOrder", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // OPEN COMMODITY ACCOUNT
@@ -819,7 +802,6 @@ app.post("/commodity/open", async (req, res) => {
     });
   }
 });
-
 
 // =====================================
 // AI PORTFOLIO ASSISTANT
@@ -902,46 +884,95 @@ ${String(message).trim()}
 Answer in plain text with short paragraphs or bullets when helpful.
 `;
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" +
-        encodeURIComponent(
-          process.env.GEMINI_API_KEY
-        ),
-      {
-        method: "POST",
+    // =====================================
+    // GEMINI REQUEST WITH RETRY
+    // =====================================
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const maxRetries = 3;
 
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
+    let response;
+    let data;
 
-          generationConfig: {
-            temperature: 0.4,
-            maxOutputTokens: 500,
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" +
+          encodeURIComponent(
+            process.env.GEMINI_API_KEY
+          ),
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
           },
-        }),
+
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: prompt,
+                  },
+                ],
+              },
+            ],
+
+            generationConfig: {
+              temperature: 0.4,
+              maxOutputTokens: 500,
+            },
+          }),
+        }
+      );
+
+      data = await response.json();
+
+      // Successful Gemini response
+      if (response.ok) {
+        break;
       }
-    );
 
-    const data = await response.json();
+      console.log(
+        `Gemini attempt ${attempt} failed:`,
+        {
+          status: response.status,
+          error: data?.error,
+        }
+      );
 
-    if (!response.ok) {
-      console.log("Gemini Error:", data);
+      // Retry only temporary/server-side errors
+      const retryableErrors = [
+        429,
+        500,
+        502,
+        503,
+        504,
+      ];
 
-      return res.status(502).json({
-        error: "AI service could not answer right now",
-      });
+      if (
+        !retryableErrors.includes(response.status) ||
+        attempt === maxRetries
+      ) {
+        return res.status(502).json({
+          error: "AI service could not answer right now",
+        });
+      }
+
+      // Wait before retry
+      const waitTime = attempt * 1500;
+
+      console.log(
+        `Retrying Gemini in ${waitTime}ms...`
+      );
+
+      await new Promise((resolve) =>
+        setTimeout(resolve, waitTime)
+      );
     }
+
+    // =====================================
+    // EXTRACT AI RESPONSE
+    // =====================================
 
     const text = data?.candidates?.[0]?.content?.parts
       ?.map((part) => part.text || "")
@@ -969,7 +1000,6 @@ Answer in plain text with short paragraphs or bullets when helpful.
   }
 });
 
-
 // =====================================
 // START SERVER
 // =====================================
@@ -979,7 +1009,7 @@ mongoose
   .then(() => {
     console.log("DB started!");
 
-    app.listen(PORT, "0.0.0.0",() => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(
         `App started on port ${PORT}`
       );

@@ -137,7 +137,8 @@ app.post("/login", async (req, res) => {
       });
     }
 
-    const isPasswordCorrect = await user.comparePassword(password);
+    const isPasswordCorrect =
+      await user.comparePassword(password);
 
     if (!isPasswordCorrect) {
       return res.status(401).json({
@@ -199,14 +200,19 @@ app.post("/auth/google", async (req, res) => {
 
     const payload = ticket.getPayload();
 
-    if (!payload || !payload.email || payload.email_verified !== true) {
+    if (
+      !payload ||
+      !payload.email ||
+      payload.email_verified !== true
+    ) {
       return res.status(401).json({
         error: "Invalid Google account",
       });
     }
 
     const email = payload.email.toLowerCase();
-    const googleName = payload.name || email.split("@")[0];
+    const googleName =
+      payload.name || email.split("@")[0];
 
     let user = await UserModel.findOne({
       email: email,
@@ -408,7 +414,8 @@ app.post("/verify-otp", async (req, res) => {
 
     if (!user.resetOtp || !user.resetOtpExpiry) {
       return res.status(400).json({
-        error: "OTP not found. Please request a new OTP",
+        error:
+          "OTP not found. Please request a new OTP",
       });
     }
 
@@ -419,7 +426,8 @@ app.post("/verify-otp", async (req, res) => {
       await user.save();
 
       return res.status(400).json({
-        error: "OTP has expired. Please request a new OTP",
+        error:
+          "OTP has expired. Please request a new OTP",
       });
     }
 
@@ -455,7 +463,8 @@ app.post("/reset-password", async (req, res) => {
 
     if (!email || !otp || !newPassword) {
       return res.status(400).json({
-        error: "Email, OTP and new password are required",
+        error:
+          "Email, OTP and new password are required",
       });
     }
 
@@ -477,7 +486,8 @@ app.post("/reset-password", async (req, res) => {
 
     if (!user.resetOtp || !user.resetOtpExpiry) {
       return res.status(400).json({
-        error: "OTP not found. Please request a new OTP",
+        error:
+          "OTP not found. Please request a new OTP",
       });
     }
 
@@ -488,7 +498,8 @@ app.post("/reset-password", async (req, res) => {
       await user.save();
 
       return res.status(400).json({
-        error: "OTP has expired. Please request a new OTP",
+        error:
+          "OTP has expired. Please request a new OTP",
       });
     }
 
@@ -540,7 +551,8 @@ app.get("/allHoldings", async (req, res) => {
 
 app.get("/allPositions", async (req, res) => {
   try {
-    const allPositions = await PositionsModel.find({});
+    const allPositions =
+      await PositionsModel.find({});
 
     res.status(200).json(allPositions);
   } catch (error) {
@@ -558,9 +570,10 @@ app.get("/allPositions", async (req, res) => {
 
 app.get("/allOrders", async (req, res) => {
   try {
-    const allOrders = await OrdersModel.find({}).sort({
-      _id: -1,
-    });
+    const allOrders =
+      await OrdersModel.find({}).sort({
+        _id: -1,
+      });
 
     res.status(200).json(allOrders);
   } catch (error) {
@@ -578,11 +591,22 @@ app.get("/allOrders", async (req, res) => {
 
 app.post("/newOrder", async (req, res) => {
   try {
-    const { name, qty, price, mode } = req.body;
+    const {
+      name,
+      qty,
+      price,
+      mode,
+    } = req.body;
 
-    if (!name || qty === undefined || price === undefined || !mode) {
+    if (
+      !name ||
+      qty === undefined ||
+      price === undefined ||
+      !mode
+    ) {
       return res.status(400).json({
-        error: "name, qty, price and mode are required",
+        error:
+          "name, qty, price and mode are required",
       });
     }
 
@@ -611,40 +635,55 @@ app.post("/newOrder", async (req, res) => {
     // =================================
 
     if (mode === "BUY") {
-      const existingHolding = await HoldingsModel.findOne({
-        name: name,
-      });
+      const existingHolding =
+        await HoldingsModel.findOne({
+          name: name,
+        });
 
       if (existingHolding) {
-        const oldQty = Number(existingHolding.qty);
-        const oldAvg = Number(existingHolding.avg);
+        const oldQty = Number(
+          existingHolding.qty
+        );
+
+        const oldAvg = Number(
+          existingHolding.avg
+        );
 
         const newQty = oldQty + quantity;
 
         const newAvg =
-          (oldQty * oldAvg + quantity * orderPrice) / newQty;
+          (oldQty * oldAvg +
+            quantity * orderPrice) /
+          newQty;
 
         existingHolding.qty = newQty;
-        existingHolding.avg = Number(newAvg.toFixed(2));
+        existingHolding.avg =
+          Number(newAvg.toFixed(2));
+
         existingHolding.price = orderPrice;
 
         await existingHolding.save();
 
-        console.log(`BUY: ${name} holding updated`);
+        console.log(
+          `BUY: ${name} holding updated`
+        );
       } else {
-        const newHolding = new HoldingsModel({
-          name: name,
-          qty: quantity,
-          avg: orderPrice,
-          price: orderPrice,
-          net: "0.00%",
-          day: "0.00%",
-          isLoss: false,
-        });
+        const newHolding =
+          new HoldingsModel({
+            name: name,
+            qty: quantity,
+            avg: orderPrice,
+            price: orderPrice,
+            net: "0.00%",
+            day: "0.00%",
+            isLoss: false,
+          });
 
         await newHolding.save();
 
-        console.log(`BUY: ${name} new holding created`);
+        console.log(
+          `BUY: ${name} new holding created`
+        );
       }
     }
 
@@ -653,21 +692,26 @@ app.post("/newOrder", async (req, res) => {
     // =================================
 
     if (mode === "SELL") {
-      const existingHolding = await HoldingsModel.findOne({
-        name: name,
-      });
+      const existingHolding =
+        await HoldingsModel.findOne({
+          name: name,
+        });
 
       if (!existingHolding) {
         return res.status(400).json({
-          error: `You don't have any holding of ${name}`,
+          error:
+            `You don't have any holding of ${name}`,
         });
       }
 
-      const oldQty = Number(existingHolding.qty);
+      const oldQty = Number(
+        existingHolding.qty
+      );
 
       if (quantity > oldQty) {
         return res.status(400).json({
-          error: `You only have ${oldQty} quantity of ${name}`,
+          error:
+            `You only have ${oldQty} quantity of ${name}`,
         });
       }
 
@@ -678,14 +722,18 @@ app.post("/newOrder", async (req, res) => {
           name: name,
         });
 
-        console.log(`SELL: ${name} holding deleted`);
+        console.log(
+          `SELL: ${name} holding deleted`
+        );
       } else {
         existingHolding.qty = newQty;
         existingHolding.price = orderPrice;
 
         await existingHolding.save();
 
-        console.log(`SELL: ${name} quantity updated`);
+        console.log(
+          `SELL: ${name} quantity updated`
+        );
       }
     }
 
@@ -711,7 +759,8 @@ app.post("/newOrder", async (req, res) => {
     // =================================
 
     res.status(200).json({
-      message: `${mode} order saved successfully`,
+      message:
+        `${mode} order saved successfully`,
       order: newOrder,
     });
   } catch (error) {
@@ -730,7 +779,11 @@ app.post("/newOrder", async (req, res) => {
 
 app.post("/commodity/open", async (req, res) => {
   try {
-    const { fullName, mobile, pan } = req.body;
+    const {
+      fullName,
+      mobile,
+      pan,
+    } = req.body;
 
     if (!fullName || !mobile || !pan) {
       return res.status(400).json({
@@ -741,7 +794,8 @@ app.post("/commodity/open", async (req, res) => {
 
     if (!/^[0-9]{10}$/.test(mobile)) {
       return res.status(400).json({
-        error: "Mobile number must be 10 digits",
+        error:
+          "Mobile number must be 10 digits",
       });
     }
 
@@ -755,22 +809,25 @@ app.post("/commodity/open", async (req, res) => {
       });
     }
 
-    const existingAccount = await CommodityModel.findOne({
-      mobile: mobile,
-    });
+    const existingAccount =
+      await CommodityModel.findOne({
+        mobile: mobile,
+      });
 
     if (existingAccount) {
       return res.status(400).json({
-        error: "Commodity account already exists",
+        error:
+          "Commodity account already exists",
       });
     }
 
-    const commodityAccount = new CommodityModel({
-      fullName: fullName.trim(),
-      mobile: mobile,
-      pan: pan.toUpperCase(),
-      status: "OPEN",
-    });
+    const commodityAccount =
+      new CommodityModel({
+        fullName: fullName.trim(),
+        mobile: mobile,
+        pan: pan.toUpperCase(),
+        status: "OPEN",
+      });
 
     await commodityAccount.save();
 
@@ -780,14 +837,18 @@ app.post("/commodity/open", async (req, res) => {
     );
 
     res.status(201).json({
-      message: "Commodity account opened successfully",
+      message:
+        "Commodity account opened successfully",
 
       account: {
         id: commodityAccount._id,
-        fullName: commodityAccount.fullName,
-        mobile: commodityAccount.mobile,
+        fullName:
+          commodityAccount.fullName,
+        mobile:
+          commodityAccount.mobile,
         pan: commodityAccount.pan,
-        status: commodityAccount.status,
+        status:
+          commodityAccount.status,
       },
     });
   } catch (error) {
@@ -797,7 +858,8 @@ app.post("/commodity/open", async (req, res) => {
     );
 
     res.status(500).json({
-      error: "Failed to open commodity account",
+      error:
+        "Failed to open commodity account",
       details: error.message,
     });
   }
@@ -815,11 +877,19 @@ app.post("/ai/chat", async (req, res) => {
       portfolio = {},
     } = req.body;
 
+    // =====================================
+    // VALIDATE MESSAGE
+    // =====================================
+
     if (!message || !String(message).trim()) {
       return res.status(400).json({
         error: "Message is required",
       });
     }
+
+    // =====================================
+    // CHECK GEMINI API KEY
+    // =====================================
 
     if (!process.env.GEMINI_API_KEY) {
       return res.status(503).json({
@@ -828,9 +898,13 @@ app.post("/ai/chat", async (req, res) => {
       });
     }
 
+    // =====================================
+    // SAFE CHAT HISTORY
+    // =====================================
+
     const safeHistory = Array.isArray(history)
       ? history
-          .slice(-8)
+          .slice(-6)
           .filter(
             (item) =>
               item &&
@@ -839,16 +913,32 @@ app.post("/ai/chat", async (req, res) => {
           )
       : [];
 
-    const portfolioContext = JSON.stringify({
-      totalInvestment: portfolio.totalInvestment,
-      currentValue: portfolio.currentValue,
-      pnl: portfolio.pnl,
-      pnlPercent: portfolio.pnlPercent,
+    // =====================================
+    // PORTFOLIO CONTEXT
+    // =====================================
 
-      holdings: Array.isArray(portfolio.holdings)
-        ? portfolio.holdings.slice(0, 15)
-        : [],
+    const portfolioContext = JSON.stringify({
+      totalInvestment:
+        portfolio.totalInvestment,
+
+      currentValue:
+        portfolio.currentValue,
+
+      pnl:
+        portfolio.pnl,
+
+      pnlPercent:
+        portfolio.pnlPercent,
+
+      holdings:
+        Array.isArray(portfolio.holdings)
+          ? portfolio.holdings.slice(0, 10)
+          : [],
     });
+
+    // =====================================
+    // CONVERSATION
+    // =====================================
 
     const conversation = safeHistory
       .map(
@@ -861,16 +951,24 @@ app.post("/ai/chat", async (req, res) => {
       )
       .join("\n");
 
+    // =====================================
+    // FAST AI PROMPT
+    // =====================================
+
     const prompt = `
-You are the AI assistant inside a student-built stock trading dashboard called TradePilot, inspired by modern Indian brokerage apps.
+You are the AI assistant inside a student-built stock trading dashboard called TradePilot.
 
 Rules:
-- Be concise, clear and useful.
-- Explain investing concepts in simple language when asked.
-- You can analyze the portfolio data supplied below, but do not claim to have live market prices unless they are explicitly supplied.
-- Never guarantee profits or present personalized financial advice as certainty.
-- For buy/sell questions, explain risks and factors to consider rather than giving a definitive instruction.
-- If the user asks something unrelated, answer normally when safe.
+- Be very concise and direct.
+- Answer simple questions quickly.
+- Explain investing concepts in simple language.
+- Use the supplied portfolio data when relevant.
+- Do not claim to have live market data unless it is provided.
+- Never guarantee profits.
+- Do not give personalized financial advice as certainty.
+- For buy/sell questions, explain important factors and risks.
+- Keep most answers under 120 words.
+- Use short bullets when helpful.
 
 Portfolio data:
 ${portfolioContext}
@@ -881,109 +979,158 @@ ${conversation || "No previous conversation."}
 User message:
 ${String(message).trim()}
 
-Answer in plain text with short paragraphs or bullets when helpful.
+Give the most useful answer directly.
 `;
 
     // =====================================
-    // GEMINI REQUEST WITH RETRY
+    // GEMINI REQUEST - OPTIMIZED FOR SPEED
     // =====================================
 
-    const maxRetries = 3;
+    const maxRetries = 2;
 
     let response;
     let data;
 
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
-      response = await fetch(
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" +
-          encodeURIComponent(
-            process.env.GEMINI_API_KEY
-          ),
-        {
-          method: "POST",
+    for (
+      let attempt = 1;
+      attempt <= maxRetries;
+      attempt++
+    ) {
+      try {
+        response = await fetch(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" +
+            encodeURIComponent(
+              process.env.GEMINI_API_KEY
+            ),
+          {
+            method: "POST",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  {
-                    text: prompt,
-                  },
-                ],
-              },
-            ],
-
-            generationConfig: {
-              temperature: 0.4,
-              maxOutputTokens: 500,
+            headers: {
+              "Content-Type": "application/json",
             },
-          }),
+
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: prompt,
+                    },
+                  ],
+                },
+              ],
+
+              generationConfig: {
+                thinkingConfig: {
+                  thinkingLevel: "low",
+                },
+
+                maxOutputTokens: 400,
+              },
+            }),
+          }
+        );
+
+        data = await response.json();
+
+        // =====================================
+        // SUCCESS
+        // =====================================
+
+        if (response.ok) {
+          break;
         }
-      );
 
-      data = await response.json();
+        console.log(
+          `Gemini attempt ${attempt} failed:`,
+          {
+            status: response.status,
+            error: data?.error,
+          }
+        );
 
-      // Successful Gemini response
-      if (response.ok) {
-        break;
-      }
+        // =====================================
+        // RETRY TEMPORARY ERRORS ONLY
+        // =====================================
 
-      console.log(
-        `Gemini attempt ${attempt} failed:`,
-        {
-          status: response.status,
-          error: data?.error,
+        const retryableErrors = [
+          429,
+          500,
+          502,
+          503,
+          504,
+        ];
+
+        if (
+          !retryableErrors.includes(
+            response.status
+          ) ||
+          attempt === maxRetries
+        ) {
+          return res.status(502).json({
+            error:
+              "AI service could not answer right now",
+          });
         }
-      );
 
-      // Retry only temporary/server-side errors
-      const retryableErrors = [
-        429,
-        500,
-        502,
-        503,
-        504,
-      ];
+        // =====================================
+        // FAST RETRY
+        // =====================================
 
-      if (
-        !retryableErrors.includes(response.status) ||
-        attempt === maxRetries
-      ) {
-        return res.status(502).json({
-          error: "AI service could not answer right now",
-        });
+        const waitTime = 800;
+
+        console.log(
+          `Retrying Gemini in ${waitTime}ms...`
+        );
+
+        await new Promise((resolve) =>
+          setTimeout(resolve, waitTime)
+        );
+      } catch (fetchError) {
+        console.log(
+          `Gemini fetch attempt ${attempt} failed:`,
+          fetchError.message
+        );
+
+        if (attempt === maxRetries) {
+          return res.status(502).json({
+            error:
+              "AI service could not answer right now",
+          });
+        }
+
+        await new Promise((resolve) =>
+          setTimeout(resolve, 800)
+        );
       }
-
-      // Wait before retry
-      const waitTime = attempt * 1500;
-
-      console.log(
-        `Retrying Gemini in ${waitTime}ms...`
-      );
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, waitTime)
-      );
     }
 
     // =====================================
     // EXTRACT AI RESPONSE
     // =====================================
 
-    const text = data?.candidates?.[0]?.content?.parts
-      ?.map((part) => part.text || "")
-      .join("")
-      .trim();
+    const text =
+      data?.candidates?.[0]?.content?.parts
+        ?.map(
+          (part) => part.text || ""
+        )
+        .join("")
+        .trim();
+
+    // =====================================
+    // EMPTY RESPONSE CHECK
+    // =====================================
 
     if (!text) {
       return res.status(502).json({
-        error: "AI returned an empty response",
+        error:
+          "AI returned an empty response",
       });
     }
+
+    // =====================================
+    // SEND RESPONSE
+    // =====================================
 
     res.status(200).json({
       reply: text,
@@ -995,7 +1142,8 @@ Answer in plain text with short paragraphs or bullets when helpful.
     );
 
     res.status(500).json({
-      error: "Failed to generate AI response",
+      error:
+        "Failed to generate AI response",
     });
   }
 });
@@ -1009,11 +1157,15 @@ mongoose
   .then(() => {
     console.log("DB started!");
 
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(
-        `App started on port ${PORT}`
-      );
-    });
+    app.listen(
+      PORT,
+      "0.0.0.0",
+      () => {
+        console.log(
+          `App started on port ${PORT}`
+        );
+      }
+    );
   })
   .catch((error) => {
     console.log(

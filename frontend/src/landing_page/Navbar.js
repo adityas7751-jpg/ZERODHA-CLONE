@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +19,10 @@ function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
 
   const productItems = [
     {
@@ -72,204 +77,100 @@ function Navbar() {
     },
   ];
 
+  const navigationLinks = [
+    {
+      name: "Signup",
+      to: "/signup",
+    },
+    {
+      name: "Login",
+      to: "/login",
+    },
+    {
+      name: "About",
+      to: "/about",
+    },
+    {
+      name: "Products",
+      to: "/products",
+    },
+    {
+      name: "Pricing",
+      to: "/pricing",
+    },
+    {
+      name: "Support",
+      to: "/support",
+    },
+  ];
+
   return (
-    <nav
-      className="navbar navbar-expand-lg border-bottom"
-      style={{
-        backgroundColor: "#fff",
-        position: "relative",
-        zIndex: 1000,
-      }}
-    >
-      <div
-        className="container p-2"
-        style={{
-          maxWidth: "1200px",
-        }}
-      >
+    <nav className="custom-navbar">
+      <div className="navbar-container">
+
         {/* LOGO */}
         <Link
-          className="navbar-brand"
+          className="navbar-logo"
           to="/"
-          onClick={() => setMenuOpen(false)}
+          onClick={closeMenu}
         >
           <img
             src="/media/images/logo.svg"
             alt="Zerodha"
-            style={{
-              width: "130px",
-              display: "block",
-            }}
           />
         </Link>
 
-        {/* NAVIGATION */}
-        <div className="ms-auto">
-          <ul
-            className="navbar-nav"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "22px",
-            }}
-          >
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/signup"
-                style={{ color: "#424242" }}
-              >
-                Signup
-              </Link>
-            </li>
+        {/* DESKTOP NAVIGATION */}
+        <div className="desktop-navigation">
+          <ul className="desktop-nav-list">
+            {navigationLinks.map((item) => (
+              <li key={item.name}>
+                <Link to={item.to}>
+                  {item.name}
+                </Link>
+              </li>
+            ))}
 
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/login"
-                style={{ color: "#424242" }}
-              >
-                Login
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/about"
-                style={{ color: "#424242" }}
-              >
-                About
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/products"
-                style={{ color: "#424242" }}
-              >
-                Products
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/pricing"
-                style={{ color: "#424242" }}
-              >
-                Pricing
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                className="nav-link"
-                to="/support"
-                style={{ color: "#424242" }}
-              >
-                Support
-              </Link>
-            </li>
-
-            {/* HAMBURGER */}
+            {/* DESKTOP HAMBURGER */}
             <li
+              className="menu-button-wrapper"
               ref={menuRef}
-              className="nav-item"
-              style={{
-                position: "relative",
-              }}
             >
               <button
                 type="button"
+                className="menu-button"
                 onClick={() => setMenuOpen(!menuOpen)}
-                aria-label="Open menu"
-                style={{
-                  border: "none",
-                  background: "transparent",
-                  fontSize: "25px",
-                  color: "#424242",
-                  cursor: "pointer",
-                  padding: "4px 5px",
-                  lineHeight: 1,
-                }}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
               >
-                ☰
+                {menuOpen ? "✕" : "☰"}
               </button>
 
-              {/* MEGA MENU */}
+              {/* DESKTOP MEGA MENU */}
               {menuOpen && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "48px",
-                    right: "-15px",
-                    width: "700px",
-                    background: "#fff",
-                    border: "1px solid #e8e8e8",
-                    boxShadow: "0 8px 25px rgba(0,0,0,0.08)",
-                    borderRadius: "2px",
-                    overflow: "hidden",
-                  }}
-                >
-                  {/* TOP PRODUCTS */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "repeat(4, 1fr)",
-                      padding: "28px 20px 25px",
-                      background: "#fff",
-                    }}
-                  >
+                <div className="mega-menu">
+
+                  {/* PRODUCTS */}
+                  <div className="mega-products">
                     {productItems.map((item) => (
                       <a
                         key={item.name}
                         href={item.link}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{
-                          textDecoration: "none",
-                          textAlign: "center",
-                          color: "#424242",
-                        }}
+                        className="product-card"
                       >
-                        <div
-                          style={{
-                            height: "48px",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            marginBottom: "10px",
-                          }}
-                        >
+                        <div className="product-image-wrapper">
                           <img
                             src={item.image}
                             alt={item.name}
-                            style={{
-                              maxWidth: "42px",
-                              maxHeight: "42px",
-                              objectFit: "contain",
-                            }}
                           />
                         </div>
 
-                        <div
-                          style={{
-                            fontSize: "15px",
-                            fontWeight: "500",
-                            marginBottom: "8px",
-                          }}
-                        >
+                        <div className="product-name">
                           {item.name}
                         </div>
 
-                        <div
-                          style={{
-                            fontSize: "12px",
-                            color: "#999",
-                          }}
-                        >
+                        <div className="product-description">
                           {item.desc}
                         </div>
                       </a>
@@ -277,40 +178,17 @@ function Navbar() {
                   </div>
 
                   {/* BOTTOM MENU */}
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr 1.25fr",
-                      gap: "45px",
-                      padding: "30px 30px 25px",
-                      background: "#fafafa",
-                    }}
-                  >
+                  <div className="mega-bottom">
+
                     {/* UTILITIES */}
-                    <div>
-                      <h5
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "500",
-                          color: "#424242",
-                          marginBottom: "22px",
-                        }}
-                      >
-                        Utilities
-                      </h5>
+                    <div className="mega-column">
+                      <h5>Utilities</h5>
 
                       {utilities.map((item) => (
                         <Link
                           key={item}
                           to="/pricing"
-                          onClick={() => setMenuOpen(false)}
-                          style={{
-                            display: "block",
-                            color: "#777",
-                            textDecoration: "none",
-                            fontSize: "14px",
-                            marginBottom: "13px",
-                          }}
+                          onClick={closeMenu}
                         >
                           {item}
                         </Link>
@@ -318,17 +196,8 @@ function Navbar() {
                     </div>
 
                     {/* UPDATES */}
-                    <div>
-                      <h5
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "500",
-                          color: "#424242",
-                          marginBottom: "22px",
-                        }}
-                      >
-                        Updates
-                      </h5>
+                    <div className="mega-column">
+                      <h5>Updates</h5>
 
                       {updates.map((item) => (
                         <a
@@ -336,13 +205,6 @@ function Navbar() {
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{
-                            display: "block",
-                            color: "#777",
-                            textDecoration: "none",
-                            fontSize: "14px",
-                            marginBottom: "13px",
-                          }}
                         >
                           {item.name}
                         </a>
@@ -350,98 +212,175 @@ function Navbar() {
                     </div>
 
                     {/* EDUCATION */}
-                    <div>
-                      <h5
-                        style={{
-                          fontSize: "16px",
-                          fontWeight: "500",
-                          color: "#424242",
-                          marginBottom: "20px",
-                        }}
-                      >
-                        Education
-                      </h5>
+                    <div className="mega-column education-column">
+                      <h5>Education</h5>
 
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "35px",
-                        }}
-                      >
+                      <div className="education-items">
+
                         <a
                           href="https://zerodha.com/varsity/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            color: "#777",
-                            textAlign: "center",
-                          }}
+                          className="education-item"
                         >
-                          <div
-                            style={{
-                              width: "52px",
-                              height: "52px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              marginBottom: "8px",
-                            }}
-                          >
+                          <div className="education-icon">
                             <img
                               src="/media/images/varsity.png"
                               alt="Varsity"
-                              style={{
-                                width: "45px",
-                                height: "45px",
-                                objectFit: "contain",
-                              }}
                             />
                           </div>
 
-                          <span style={{ fontSize: "14px" }}>
-                            Varsity
-                          </span>
+                          <span>Varsity</span>
                         </a>
 
                         <a
                           href="https://tradingqna.com/"
                           target="_blank"
                           rel="noopener noreferrer"
-                          style={{
-                            textDecoration: "none",
-                            color: "#777",
-                            textAlign: "center",
-                          }}
+                          className="education-item"
                         >
-                          <div
-                            style={{
-                              width: "52px",
-                              height: "52px",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              marginBottom: "8px",
-                              fontSize: "42px",
-                              color: "#10a9d8",
-                              fontWeight: "300",
-                            }}
-                          >
+                          <div className="education-icon qna-icon">
                             ◻
                           </div>
 
-                          <span style={{ fontSize: "14px" }}>
-                            Trading Q&A
-                          </span>
+                          <span>Trading Q&A</span>
                         </a>
+
                       </div>
                     </div>
+
                   </div>
                 </div>
               )}
             </li>
           </ul>
         </div>
+
+        {/* MOBILE HAMBURGER */}
+        <div
+          className="mobile-menu-wrapper"
+          ref={menuRef}
+        >
+          <button
+            type="button"
+            className="mobile-menu-button"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+          >
+            {menuOpen ? "✕" : "☰"}
+          </button>
+
+          {/* MOBILE MENU */}
+          {menuOpen && (
+            <div className="mobile-menu">
+
+              {/* MOBILE NAV LINKS */}
+              <div className="mobile-navigation-links">
+                {navigationLinks.map((item) => (
+                  <Link
+                    key={item.name}
+                    to={item.to}
+                    onClick={closeMenu}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+
+              {/* MOBILE PRODUCTS */}
+              <div className="mobile-section">
+                <h4>Products</h4>
+
+                <div className="mobile-products">
+                  {productItems.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={closeMenu}
+                    >
+                      <div className="mobile-product-icon">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                        />
+                      </div>
+
+                      <div>
+                        <strong>{item.name}</strong>
+                        <span>{item.desc}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* MOBILE UTILITIES */}
+              <div className="mobile-section">
+                <h4>Utilities</h4>
+
+                {utilities.map((item) => (
+                  <Link
+                    key={item}
+                    to="/pricing"
+                    onClick={closeMenu}
+                    className="mobile-simple-link"
+                  >
+                    {item}
+                  </Link>
+                ))}
+              </div>
+
+              {/* MOBILE UPDATES */}
+              <div className="mobile-section">
+                <h4>Updates</h4>
+
+                {updates.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mobile-simple-link"
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+
+              {/* MOBILE EDUCATION */}
+              <div className="mobile-section">
+                <h4>Education</h4>
+
+                <div className="mobile-education">
+                  <a
+                    href="https://zerodha.com/varsity/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="/media/images/varsity.png"
+                      alt="Varsity"
+                    />
+                    <span>Varsity</span>
+                  </a>
+
+                  <a
+                    href="https://tradingqna.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="mobile-qna-icon">◻</span>
+                    <span>Trading Q&A</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          )}
+        </div>
+
       </div>
     </nav>
   );

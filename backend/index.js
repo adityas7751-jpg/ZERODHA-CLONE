@@ -211,6 +211,7 @@ app.post("/auth/google", async (req, res) => {
     }
 
     const email = payload.email.toLowerCase();
+
     const googleName =
       payload.name || email.split("@")[0];
 
@@ -624,7 +625,10 @@ app.post("/newOrder", async (req, res) => {
       });
     }
 
-    if (mode !== "BUY" && mode !== "SELL") {
+    if (
+      mode !== "BUY" &&
+      mode !== "SELL"
+    ) {
       return res.status(400).json({
         error: "Mode must be BUY or SELL",
       });
@@ -649,7 +653,8 @@ app.post("/newOrder", async (req, res) => {
           existingHolding.avg
         );
 
-        const newQty = oldQty + quantity;
+        const newQty =
+          oldQty + quantity;
 
         const newAvg =
           (oldQty * oldAvg +
@@ -657,10 +662,12 @@ app.post("/newOrder", async (req, res) => {
           newQty;
 
         existingHolding.qty = newQty;
+
         existingHolding.avg =
           Number(newAvg.toFixed(2));
 
-        existingHolding.price = orderPrice;
+        existingHolding.price =
+          orderPrice;
 
         await existingHolding.save();
 
@@ -715,7 +722,8 @@ app.post("/newOrder", async (req, res) => {
         });
       }
 
-      const newQty = oldQty - quantity;
+      const newQty =
+        oldQty - quantity;
 
       if (newQty === 0) {
         await HoldingsModel.deleteOne({
@@ -727,7 +735,8 @@ app.post("/newOrder", async (req, res) => {
         );
       } else {
         existingHolding.qty = newQty;
-        existingHolding.price = orderPrice;
+        existingHolding.price =
+          orderPrice;
 
         await existingHolding.save();
 
@@ -741,12 +750,13 @@ app.post("/newOrder", async (req, res) => {
     // SAVE ORDER
     // =================================
 
-    const newOrder = new OrdersModel({
-      name: name,
-      qty: quantity,
-      price: orderPrice,
-      mode: mode,
-    });
+    const newOrder =
+      new OrdersModel({
+        name: name,
+        qty: quantity,
+        price: orderPrice,
+        mode: mode,
+      });
 
     await newOrder.save();
 
@@ -767,7 +777,8 @@ app.post("/newOrder", async (req, res) => {
     console.log("Order Error:", error);
 
     res.status(500).json({
-      error: "Failed to process order",
+      error:
+        "Failed to process order",
       details: error.message,
     });
   }
@@ -846,7 +857,8 @@ app.post("/commodity/open", async (req, res) => {
           commodityAccount.fullName,
         mobile:
           commodityAccount.mobile,
-        pan: commodityAccount.pan,
+        pan:
+          commodityAccount.pan,
         status:
           commodityAccount.status,
       },
@@ -888,7 +900,7 @@ app.post("/ai/chat", async (req, res) => {
     }
 
     // =====================================
-    // CHECK GEMINI API KEY
+    // CHECK API KEY
     // =====================================
 
     if (!process.env.GEMINI_API_KEY) {
@@ -899,91 +911,96 @@ app.post("/ai/chat", async (req, res) => {
     }
 
     // =====================================
-    // SAFE CHAT HISTORY
+    // CHAT HISTORY
     // =====================================
 
-    const safeHistory = Array.isArray(history)
-      ? history
-          .slice(-6)
-          .filter(
-            (item) =>
-              item &&
-              item.role &&
-              item.text
+    const safeHistory =
+      Array.isArray(history)
+        ? history
+            .slice(-4)
+            .filter(
+              (item) =>
+                item &&
+                item.role &&
+                item.text
+            )
+        : [];
+
+    // =====================================
+    // PORTFOLIO
+    // =====================================
+
+    const portfolioContext =
+      JSON.stringify({
+        totalInvestment:
+          portfolio.totalInvestment,
+
+        currentValue:
+          portfolio.currentValue,
+
+        pnl:
+          portfolio.pnl,
+
+        pnlPercent:
+          portfolio.pnlPercent,
+
+        holdings:
+          Array.isArray(
+            portfolio.holdings
           )
-      : [];
-
-    // =====================================
-    // PORTFOLIO CONTEXT
-    // =====================================
-
-    const portfolioContext = JSON.stringify({
-      totalInvestment:
-        portfolio.totalInvestment,
-
-      currentValue:
-        portfolio.currentValue,
-
-      pnl:
-        portfolio.pnl,
-
-      pnlPercent:
-        portfolio.pnlPercent,
-
-      holdings:
-        Array.isArray(portfolio.holdings)
-          ? portfolio.holdings.slice(0, 10)
-          : [],
-    });
+            ? portfolio.holdings.slice(0, 8)
+            : [],
+      });
 
     // =====================================
     // CONVERSATION
     // =====================================
 
-    const conversation = safeHistory
-      .map(
-        (item) =>
-          `${
-            item.role === "assistant"
-              ? "Assistant"
-              : "User"
-          }: ${item.text}`
-      )
-      .join("\n");
+    const conversation =
+      safeHistory
+        .map(
+          (item) =>
+            `${
+              item.role ===
+              "assistant"
+                ? "Assistant"
+                : "User"
+            }: ${item.text}`
+        )
+        .join("\n");
 
     // =====================================
-    // FAST AI PROMPT
+    // FAST PROMPT
     // =====================================
 
     const prompt = `
-You are the AI assistant inside a student-built stock trading dashboard called TradePilot.
+You are TradePilot, an AI assistant inside a student-built stock trading dashboard.
 
 Rules:
-- Be very concise and direct.
-- Answer simple questions quickly.
-- Explain investing concepts in simple language.
-- Use the supplied portfolio data when relevant.
-- Do not claim to have live market data unless it is provided.
+- Answer directly and briefly.
+- Keep answers under 100 words when possible.
+- Explain concepts in simple language.
+- Use portfolio data only when relevant.
+- Do not claim live market data unless supplied.
 - Never guarantee profits.
-- Do not give personalized financial advice as certainty.
-- For buy/sell questions, explain important factors and risks.
-- Keep most answers under 120 words.
-- Use short bullets when helpful.
+- For buy/sell questions, explain risks and factors instead of giving a certain instruction.
+- Use short bullets when useful.
 
-Portfolio data:
+Portfolio:
 ${portfolioContext}
 
 Previous conversation:
-${conversation || "No previous conversation."}
+${conversation || "None"}
 
-User message:
+User:
 ${String(message).trim()}
 
-Give the most useful answer directly.
+Answer directly.
 `;
 
     // =====================================
-    // GEMINI REQUEST - OPTIMIZED FOR SPEED
+    // GEMINI 3.5 FLASH-LITE
+    // LOW LATENCY
     // =====================================
 
     const maxRetries = 2;
@@ -998,7 +1015,7 @@ Give the most useful answer directly.
     ) {
       try {
         response = await fetch(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" +
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=" +
             encodeURIComponent(
               process.env.GEMINI_API_KEY
             ),
@@ -1006,7 +1023,8 @@ Give the most useful answer directly.
             method: "POST",
 
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type":
+                "application/json",
             },
 
             body: JSON.stringify({
@@ -1022,16 +1040,18 @@ Give the most useful answer directly.
 
               generationConfig: {
                 thinkingConfig: {
-                  thinkingLevel: "low",
+                  thinkingLevel:
+                    "minimal",
                 },
 
-                maxOutputTokens: 400,
+                maxOutputTokens: 300,
               },
             }),
           }
         );
 
-        data = await response.json();
+        data =
+          await response.json();
 
         // =====================================
         // SUCCESS
@@ -1044,13 +1064,15 @@ Give the most useful answer directly.
         console.log(
           `Gemini attempt ${attempt} failed:`,
           {
-            status: response.status,
-            error: data?.error,
+            status:
+              response.status,
+            error:
+              data?.error,
           }
         );
 
         // =====================================
-        // RETRY TEMPORARY ERRORS ONLY
+        // RETRY ONLY TEMPORARY ERRORS
         // =====================================
 
         const retryableErrors = [
@@ -1083,8 +1105,12 @@ Give the most useful answer directly.
           `Retrying Gemini in ${waitTime}ms...`
         );
 
-        await new Promise((resolve) =>
-          setTimeout(resolve, waitTime)
+        await new Promise(
+          (resolve) =>
+            setTimeout(
+              resolve,
+              waitTime
+            )
         );
       } catch (fetchError) {
         console.log(
@@ -1092,33 +1118,42 @@ Give the most useful answer directly.
           fetchError.message
         );
 
-        if (attempt === maxRetries) {
+        if (
+          attempt ===
+          maxRetries
+        ) {
           return res.status(502).json({
             error:
               "AI service could not answer right now",
           });
         }
 
-        await new Promise((resolve) =>
-          setTimeout(resolve, 800)
+        await new Promise(
+          (resolve) =>
+            setTimeout(
+              resolve,
+              800
+            )
         );
       }
     }
 
     // =====================================
-    // EXTRACT AI RESPONSE
+    // EXTRACT RESPONSE
     // =====================================
 
     const text =
-      data?.candidates?.[0]?.content?.parts
+      data?.candidates?.[0]
+        ?.content?.parts
         ?.map(
-          (part) => part.text || ""
+          (part) =>
+            part.text || ""
         )
         .join("")
         .trim();
 
     // =====================================
-    // EMPTY RESPONSE CHECK
+    // EMPTY RESPONSE
     // =====================================
 
     if (!text) {

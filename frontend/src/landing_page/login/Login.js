@@ -87,7 +87,7 @@ const Login = () => {
       alert("Google Login successful");
 
       window.location.href =
-        "https://zerodha-clone-dashboard-aditya.netlify.app";
+        "https://zerodha-clone-blush.vercel.app";
     } catch (error) {
       console.log("Google Login Error:", error);
 

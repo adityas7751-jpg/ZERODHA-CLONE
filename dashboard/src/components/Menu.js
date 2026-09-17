@@ -15,7 +15,7 @@ const Menu = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "https://zerodha-clone-aditya.netlify.app";
+    window.location.href = "https://zerodha-clone-frontend-ebon.vercel.app/";
   };
 
   return (

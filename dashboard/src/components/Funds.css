@@ -1045,3 +1045,122 @@
   }
 
 }
+/* =========================================
+   FINAL EQUITY + COMMODITY BALANCE FIX
+========================================= */
+
+.funds-content {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(330px, 0.9fr) !important;
+  gap: 22px !important;
+  align-items: stretch !important;
+}
+
+.equity-section {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: block !important;
+}
+
+.equity-section .section-heading {
+  width: 100% !important;
+  margin-bottom: 13px !important;
+}
+
+.equity-section .fund-table {
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.commodity-card {
+  width: 100% !important;
+  min-height: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Better desktop proportions */
+
+@media (min-width: 1051px) {
+  .funds-content {
+    grid-template-columns: 1.55fr 0.95fr !important;
+  }
+
+  .equity-section {
+    min-height: 100%;
+  }
+
+  .fund-table {
+    min-height: 360px;
+  }
+
+  .commodity-card {
+    min-height: 360px !important;
+  }
+}
+
+/* =========================================
+   TABLE MORE PREMIUM
+========================================= */
+
+.fund-table {
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.fund-table:hover {
+  box-shadow:
+    0 12px 32px rgba(28, 47, 73, 0.07);
+}
+
+.fund-row {
+  transition:
+    background 0.18s ease,
+    padding 0.18s ease;
+}
+
+.fund-row:not(.highlight):hover {
+  background: #f9fbfd;
+}
+
+/* Highlight available margin */
+
+.fund-row.highlight {
+  background: linear-gradient(
+    90deg,
+    #f7fbff,
+    #ffffff
+  );
+  border-radius: 9px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+/* =========================================
+   RESPONSIVE OVERRIDE
+========================================= */
+
+@media (max-width: 1050px) {
+  .funds-content {
+    grid-template-columns: 1fr !important;
+  }
+
+  .commodity-card {
+    min-height: 360px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .funds-content {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .fund-table {
+    min-height: auto !important;
+  }
+
+  .commodity-card {
+    min-height: auto !important;
+  }
+}

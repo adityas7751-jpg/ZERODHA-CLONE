@@ -1,22 +1,13 @@
 import React, { useState } from "react";
+import "./Funds.css";
 
 const Funds = () => {
-  // =========================
-  // BALANCE
-  // =========================
-  const [balance, setBalance] = useState(4043.10);
+  const [balance, setBalance] = useState(4043.1);
 
-  // =========================
-  // ADD / WITHDRAW MODAL
-  // =========================
   const [showAddFunds, setShowAddFunds] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
-
   const [amount, setAmount] = useState("");
 
-  // =========================
-  // COMMODITY MODAL
-  // =========================
   const [showCommodity, setShowCommodity] = useState(false);
 
   const [commodityData, setCommodityData] = useState({
@@ -25,27 +16,30 @@ const Funds = () => {
     pan: "",
   });
 
-  // =========================
+  // =====================================
   // ADD FUNDS
-  // =========================
+  // =====================================
+
   const handleAddFunds = () => {
     setShowAddFunds(true);
     setShowWithdraw(false);
     setAmount("");
   };
 
-  // =========================
+  // =====================================
   // WITHDRAW
-  // =========================
+  // =====================================
+
   const handleWithdraw = () => {
     setShowWithdraw(true);
     setShowAddFunds(false);
     setAmount("");
   };
 
-  // =========================
-  // ADD / WITHDRAW TRANSACTION
-  // =========================
+  // =====================================
+  // ADD / WITHDRAW
+  // =====================================
+
   const handleTransaction = () => {
     const value = Number(amount);
 
@@ -54,13 +48,11 @@ const Funds = () => {
       return;
     }
 
-    // Withdraw check
     if (showWithdraw && value > balance) {
       alert("Insufficient funds");
       return;
     }
 
-    // Add funds
     if (showAddFunds) {
       setBalance((prev) => prev + value);
 
@@ -69,7 +61,6 @@ const Funds = () => {
       );
     }
 
-    // Withdraw funds
     if (showWithdraw) {
       setBalance((prev) => prev - value);
 
@@ -83,18 +74,20 @@ const Funds = () => {
     setShowWithdraw(false);
   };
 
-  // =========================
+  // =====================================
   // CLOSE FUND MODAL
-  // =========================
+  // =====================================
+
   const closeFundModal = () => {
     setShowAddFunds(false);
     setShowWithdraw(false);
     setAmount("");
   };
 
-  // =========================
-  // COMMODITY INPUT CHANGE
-  // =========================
+  // =====================================
+  // COMMODITY INPUT
+  // =====================================
+
   const handleCommodityChange = (e) => {
     const { name, value } = e.target;
 
@@ -104,14 +97,13 @@ const Funds = () => {
     }));
   };
 
-  // =========================
-  // OPEN COMMODITY ACCOUNT
-  // =========================
+  // =====================================
+  // OPEN COMMODITY
+  // =====================================
+
   const handleOpenCommodity = () => {
     setShowCommodity(true);
 
-    // IMPORTANT:
-    // Form hamesha blank open hoga
     setCommodityData({
       fullName: "",
       mobile: "",
@@ -119,9 +111,10 @@ const Funds = () => {
     });
   };
 
-  // =========================
-  // CLOSE COMMODITY MODAL
-  // =========================
+  // =====================================
+  // CLOSE COMMODITY
+  // =====================================
+
   const closeCommodityModal = () => {
     setShowCommodity(false);
 
@@ -132,44 +125,53 @@ const Funds = () => {
     });
   };
 
-  // =========================
-  // SUBMIT COMMODITY ACCOUNT
-  // =========================
+  // =====================================
+  // COMMODITY SUBMIT
+  // =====================================
+
   const handleCommoditySubmit = (e) => {
     e.preventDefault();
 
-    const { fullName, mobile, pan } = commodityData;
+    const {
+      fullName,
+      mobile,
+      pan,
+    } = commodityData;
 
-    // Full name validation
     if (!fullName.trim()) {
       alert("Please enter your full name");
       return;
     }
 
-    // Mobile validation
     if (!mobile.trim()) {
       alert("Please enter mobile number");
       return;
     }
 
     if (!/^[0-9]{10}$/.test(mobile)) {
-      alert("Please enter a valid 10 digit mobile number");
+      alert(
+        "Please enter a valid 10 digit mobile number"
+      );
       return;
     }
 
-    // PAN validation
     if (!pan.trim()) {
       alert("Please enter PAN number");
       return;
     }
 
-    if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan.toUpperCase())) {
+    if (
+      !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(
+        pan.toUpperCase()
+      )
+    ) {
       alert("Please enter a valid PAN number");
       return;
     }
 
-    // Success
-    alert("Commodity account opened successfully");
+    alert(
+      "Commodity account opened successfully"
+    );
 
     closeCommodityModal();
   };
@@ -177,17 +179,24 @@ const Funds = () => {
   return (
     <div className="funds-page">
 
-      {/* =================================
+      {/* =====================================
           HEADER
-      ================================= */}
+      ===================================== */}
+
       <div className="funds-header">
 
-        <div>
-          <h2>Funds</h2>
+        <div className="funds-title-area">
+          <div className="funds-title-icon">
+            ₹
+          </div>
 
-          <p>
-            Manage your available balance and fund transfers.
-          </p>
+          <div>
+            <h2>Funds</h2>
+
+            <p>
+              Manage your trading balance and fund transfers.
+            </p>
+          </div>
         </div>
 
         <div className="fund-actions">
@@ -196,6 +205,7 @@ const Funds = () => {
             className="fund-btn add-btn"
             onClick={handleAddFunds}
           >
+            <span>＋</span>
             Add funds
           </button>
 
@@ -203,36 +213,73 @@ const Funds = () => {
             className="fund-btn withdraw-btn"
             onClick={handleWithdraw}
           >
+            <span>↗</span>
             Withdraw
           </button>
 
         </div>
       </div>
 
-
-      {/* =================================
+      {/* =====================================
           BALANCE CARDS
-      ================================= */}
+      ===================================== */}
+
       <div className="balance-container">
 
-        {/* Available Margin */}
-        <div className="balance-card">
+        {/* AVAILABLE MARGIN */}
+
+        <div className="balance-card primary-card">
+
+          <div className="card-top">
+
+            <div className="card-icon blue-icon">
+              ₹
+            </div>
+
+            <span className="card-status">
+              Available
+            </span>
+
+          </div>
 
           <p>Available margin</p>
 
           <h2>
-            ₹{balance.toFixed(2)}
+            ₹{balance.toLocaleString("en-IN", {
+              minimumFractionDigits: 2,
+            })}
           </h2>
 
-          <span>
+          <span className="card-description">
             Available for trading
           </span>
 
+          <div className="card-bottom-line">
+            <span>Trading balance</span>
+            <span>100%</span>
+          </div>
+
+          <div className="progress-bar">
+            <div className="progress-fill"></div>
+          </div>
+
         </div>
 
+        {/* USED MARGIN */}
 
-        {/* Used Margin */}
         <div className="balance-card">
+
+          <div className="card-top">
+
+            <div className="card-icon purple-icon">
+              ◉
+            </div>
+
+            <span className="card-status used-status">
+              Used
+            </span>
+
+          </div>
 
           <p>Used margin</p>
 
@@ -240,46 +287,130 @@ const Funds = () => {
             ₹3,757.30
           </h2>
 
-          <span>
-            Currently used
+          <span className="card-description">
+            Currently utilized
           </span>
+
+          <div className="card-bottom-line">
+            <span>Margin utilization</span>
+            <span>48%</span>
+          </div>
+
+          <div className="progress-bar">
+            <div className="progress-fill used-progress"></div>
+          </div>
 
         </div>
 
+        {/* AVAILABLE CASH */}
 
-        {/* Available Cash */}
         <div className="balance-card">
+
+          <div className="card-top">
+
+            <div className="card-icon green-icon">
+              $
+            </div>
+
+            <span className="card-status cash-status">
+              Cash
+            </span>
+
+          </div>
 
           <p>Available cash</p>
 
           <h2>
-            ₹{balance.toFixed(2)}
+            ₹{balance.toLocaleString("en-IN", {
+              minimumFractionDigits: 2,
+            })}
           </h2>
 
-          <span>
-            Cash available
+          <span className="card-description">
+            Ready for deployment
           </span>
+
+          <div className="cash-info">
+            <span className="cash-dot"></span>
+            Funds available instantly
+          </div>
 
         </div>
 
       </div>
 
+      {/* =====================================
+          QUICK STATS
+      ===================================== */}
 
-      {/* =================================
+      <div className="fund-mini-stats">
+
+        <div className="mini-stat">
+          <span className="mini-icon">↗</span>
+
+          <div>
+            <small>Today's Payin</small>
+            <strong>₹4,064.00</strong>
+          </div>
+        </div>
+
+        <div className="mini-stat">
+          <span className="mini-icon">◈</span>
+
+          <div>
+            <small>Opening Balance</small>
+            <strong>₹4,043.10</strong>
+          </div>
+        </div>
+
+        <div className="mini-stat">
+          <span className="mini-icon">✓</span>
+
+          <div>
+            <small>Collateral</small>
+            <strong>₹0.00</strong>
+          </div>
+        </div>
+
+        <div className="mini-stat">
+          <span className="mini-icon">%</span>
+
+          <div>
+            <small>Options Premium</small>
+            <strong>₹0.00</strong>
+          </div>
+        </div>
+
+      </div>
+
+      {/* =====================================
           MAIN CONTENT
-      ================================= */}
+      ===================================== */}
+
       <div className="funds-content">
 
-
-        {/* =================================
+        {/* =====================================
             EQUITY
-        ================================= */}
+        ===================================== */}
+
         <div className="equity-section">
 
-          <h3>Equity</h3>
+          <div className="section-heading">
+
+            <div>
+              <h3>Equity</h3>
+              <p>
+                Your equity trading fund details
+              </p>
+            </div>
+
+            <span className="live-badge">
+              ● Live
+            </span>
+
+          </div>
 
           <div className="fund-table">
-
 
             <div className="fund-row highlight">
 
@@ -293,12 +424,9 @@ const Funds = () => {
 
             </div>
 
-
             <div className="fund-row">
 
-              <span>
-                Used margin
-              </span>
+              <span>Used margin</span>
 
               <span>
                 ₹3,757.30
@@ -306,12 +434,9 @@ const Funds = () => {
 
             </div>
 
-
             <div className="fund-row">
 
-              <span>
-                Available cash
-              </span>
+              <span>Available cash</span>
 
               <span>
                 ₹{balance.toFixed(2)}
@@ -319,126 +444,81 @@ const Funds = () => {
 
             </div>
 
-
-            <hr />
-
+            <div className="table-divider"></div>
 
             <div className="fund-row">
 
-              <span>
-                Opening balance
-              </span>
+              <span>Opening balance</span>
 
-              <span>
-                ₹4,043.10
+              <span>₹4,043.10</span>
+
+            </div>
+
+            <div className="fund-row">
+
+              <span>Payin</span>
+
+              <span className="positive-value">
+                +₹4,064.00
               </span>
 
             </div>
 
-
             <div className="fund-row">
 
-              <span>
-                Payin
-              </span>
+              <span>SPAN</span>
 
-              <span>
-                ₹4,064.00
-              </span>
+              <span>₹0.00</span>
 
             </div>
 
-
             <div className="fund-row">
 
-              <span>
-                SPAN
-              </span>
+              <span>Delivery margin</span>
 
-              <span>
-                ₹0.00
-              </span>
+              <span>₹0.00</span>
 
             </div>
 
-
             <div className="fund-row">
 
-              <span>
-                Delivery margin
-              </span>
+              <span>Exposure</span>
 
-              <span>
-                ₹0.00
-              </span>
+              <span>₹0.00</span>
 
             </div>
 
-
             <div className="fund-row">
 
-              <span>
-                Exposure
-              </span>
+              <span>Options premium</span>
 
-              <span>
-                ₹0.00
-              </span>
+              <span>₹0.00</span>
 
             </div>
 
+            <div className="table-divider"></div>
 
             <div className="fund-row">
 
-              <span>
-                Options premium
-              </span>
+              <span>Collateral (Liquid funds)</span>
 
-              <span>
-                ₹0.00
-              </span>
+              <span>₹0.00</span>
 
             </div>
-
-
-            <hr />
-
 
             <div className="fund-row">
 
-              <span>
-                Collateral (Liquid funds)
-              </span>
+              <span>Collateral (Equity)</span>
 
-              <span>
-                ₹0.00
-              </span>
+              <span>₹0.00</span>
 
             </div>
-
-
-            <div className="fund-row">
-
-              <span>
-                Collateral (Equity)
-              </span>
-
-              <span>
-                ₹0.00
-              </span>
-
-            </div>
-
 
             <div className="fund-row total">
 
-              <span>
-                Total collateral
-              </span>
+              <span>Total collateral</span>
 
-              <strong>
-                ₹0.00
-              </strong>
+              <strong>₹0.00</strong>
 
             </div>
 
@@ -446,46 +526,81 @@ const Funds = () => {
 
         </div>
 
-
-        {/* =================================
+        {/* =====================================
             COMMODITY
-        ================================= */}
+        ===================================== */}
+
         <div className="commodity-card">
 
-          <div className="commodity-icon">
-            ₹
+          <div className="commodity-glow"></div>
+
+          <div className="commodity-icon-large">
+            ◈
           </div>
+
+          <span className="commodity-label">
+            FUTURES & OPTIONS
+          </span>
 
           <h3>
             Commodity
           </h3>
 
           <p>
-            You don't have a commodity account
+            Trade commodities with a dedicated
+            trading account.
           </p>
+
+          <div className="commodity-features">
+
+            <span>
+              ✓ Fast settlement
+            </span>
+
+            <span>
+              ✓ Secure account
+            </span>
+
+            <span>
+              ✓ Easy onboarding
+            </span>
+
+          </div>
 
           <button
             className="open-account-btn"
             onClick={handleOpenCommodity}
           >
-            Open Account
+            Open Commodity Account
+            <span>→</span>
           </button>
+
+          <small className="commodity-note">
+            Takes less than 2 minutes
+          </small>
 
         </div>
 
       </div>
 
-
-      {/* =================================
+      {/* =====================================
           ADD / WITHDRAW MODAL
-      ================================= */}
+      ===================================== */}
+
       {(showAddFunds || showWithdraw) && (
 
-        <div className="fund-modal-overlay">
+        <div
+          className="fund-modal-overlay"
+          onClick={closeFundModal}
+        >
 
-          <div className="fund-modal">
+          <div
+            className="fund-modal"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
 
-            {/* Close */}
             <button
               className="close-btn"
               onClick={closeFundModal}
@@ -493,6 +608,9 @@ const Funds = () => {
               ×
             </button>
 
+            <div className="modal-icon">
+              {showAddFunds ? "＋" : "↗"}
+            </div>
 
             <h2>
               {showAddFunds
@@ -500,24 +618,45 @@ const Funds = () => {
                 : "Withdraw Funds"}
             </h2>
 
-
             <p>
               {showAddFunds
-                ? "Enter the amount you want to add."
-                : "Enter the amount you want to withdraw."}
+                ? "Add money to your trading balance."
+                : "Transfer money from your trading balance."}
             </p>
 
+            <div className="amount-input-wrapper">
 
-            <input
-              type="number"
-              placeholder="Enter amount"
-              value={amount}
-              onChange={(e) =>
-                setAmount(e.target.value)
-              }
-              autoComplete="off"
-            />
+              <span>₹</span>
 
+              <input
+                type="number"
+                placeholder="0.00"
+                value={amount}
+                onChange={(e) =>
+                  setAmount(e.target.value)
+                }
+                autoComplete="off"
+              />
+
+            </div>
+
+            <div className="quick-amounts">
+
+              {[500, 1000, 5000, 10000].map(
+                (value) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() =>
+                      setAmount(value)
+                    }
+                  >
+                    ₹{value.toLocaleString("en-IN")}
+                  </button>
+                )
+              )}
+
+            </div>
 
             <button
               className="confirm-btn"
@@ -525,26 +664,38 @@ const Funds = () => {
             >
               {showAddFunds
                 ? "Add Funds"
-                : "Withdraw"}
+                : "Withdraw Funds"}
+
+              <span>→</span>
             </button>
+
+            <small className="modal-secure">
+              🔒 Secure transaction
+            </small>
 
           </div>
 
         </div>
-
       )}
 
+      {/* =====================================
+          COMMODITY MODAL
+      ===================================== */}
 
-      {/* =================================
-          COMMODITY ACCOUNT MODAL
-      ================================= */}
       {showCommodity && (
 
-        <div className="fund-modal-overlay">
+        <div
+          className="fund-modal-overlay"
+          onClick={closeCommodityModal}
+        >
 
-          <div className="fund-modal commodity-modal">
+          <div
+            className="fund-modal commodity-modal"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
 
-            {/* Close */}
             <button
               className="close-btn"
               onClick={closeCommodityModal}
@@ -552,93 +703,139 @@ const Funds = () => {
               ×
             </button>
 
+            <div className="modal-header">
 
-            <h2>
-              Open Commodity Account
-            </h2>
+              <div className="modal-icon commodity-modal-icon">
+                ◈
+              </div>
 
+              <div>
+                <span className="modal-overline">
+                  ACCOUNT OPENING
+                </span>
 
-            <p>
-              Enter your details to open a commodity account.
+                <h2>
+                  Open Commodity Account
+                </h2>
+              </div>
+
+            </div>
+
+            <p className="modal-description">
+              Enter your details to activate
+              commodity trading.
             </p>
 
-
-            {/* FORM */}
             <form
               onSubmit={handleCommoditySubmit}
               autoComplete="off"
             >
 
-              {/* Full Name */}
               <div className="form-group">
 
                 <label>
                   Full Name
                 </label>
 
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Enter full name"
-                  value={commodityData.fullName}
-                  onChange={handleCommodityChange}
-                  autoComplete="off"
-                />
+                <div className="input-container">
+
+                  <span>👤</span>
+
+                  <input
+                    type="text"
+                    name="fullName"
+                    placeholder="Enter your full name"
+                    value={
+                      commodityData.fullName
+                    }
+                    onChange={
+                      handleCommodityChange
+                    }
+                    autoComplete="off"
+                  />
+
+                </div>
 
               </div>
 
-
-              {/* Mobile Number */}
               <div className="form-group">
 
                 <label>
                   Mobile Number
                 </label>
 
-                <input
-                  type="tel"
-                  name="mobile"
-                  placeholder="Enter mobile number"
-                  maxLength="10"
-                  value={commodityData.mobile}
-                  onChange={handleCommodityChange}
-                  autoComplete="off"
-                />
+                <div className="input-container">
+
+                  <span>📱</span>
+
+                  <input
+                    type="tel"
+                    name="mobile"
+                    placeholder="10 digit mobile number"
+                    maxLength="10"
+                    value={
+                      commodityData.mobile
+                    }
+                    onChange={
+                      handleCommodityChange
+                    }
+                    autoComplete="off"
+                  />
+
+                </div>
 
               </div>
 
-
-              {/* PAN Number */}
               <div className="form-group">
 
                 <label>
                   PAN Number
                 </label>
 
-                <input
-                  type="text"
-                  name="pan"
-                  placeholder="Enter PAN number"
-                  maxLength="10"
-                  value={commodityData.pan}
-                  onChange={(e) =>
-                    setCommodityData((prev) => ({
-                      ...prev,
-                      pan: e.target.value.toUpperCase(),
-                    }))
-                  }
-                  autoComplete="off"
-                />
+                <div className="input-container">
+
+                  <span>▣</span>
+
+                  <input
+                    type="text"
+                    name="pan"
+                    placeholder="Enter PAN number"
+                    maxLength="10"
+                    value={
+                      commodityData.pan
+                    }
+                    onChange={(e) =>
+                      setCommodityData(
+                        (prev) => ({
+                          ...prev,
+                          pan: e.target.value.toUpperCase(),
+                        })
+                      )
+                    }
+                    autoComplete="off"
+                  />
+
+                </div>
 
               </div>
 
+              <div className="form-security">
 
-              {/* Submit */}
+                <span>✓</span>
+
+                <p>
+                  Your information is securely
+                  processed and protected.
+                </p>
+
+              </div>
+
               <button
                 type="submit"
-                className="confirm-btn"
+                className="confirm-btn commodity-submit"
               >
                 Open Account
+                <span>→</span>
               </button>
 
             </form>
@@ -646,7 +843,6 @@ const Funds = () => {
           </div>
 
         </div>
-
       )}
 
     </div>

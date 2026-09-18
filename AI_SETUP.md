@@ -20,7 +20,7 @@ npm install
 npm start
 ```
 
-The AI endpoint is `POST http://localhost:3002/ai/chat`.
+The AI endpoint is `https://zerodha-clone-b18n.onrender.com`.
 
 ## 3. Start the dashboard
 
